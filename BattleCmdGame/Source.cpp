@@ -5,6 +5,7 @@
 class Boss {
 public:
 	int hp, dmg, armour, stamina;
+	//test
 	int bossLevel = 1;
 	Boss() {
 		hp = 100;
