@@ -1,6 +1,46 @@
 #include <iostream>
 #include <sstream>
 
+//Boss class
+class Boss {
+public:
+	int hp, dmg, armour, stamina;
+	int bossLevel = 1;
+	Boss() {
+		hp = 100;
+		dmg = 10;
+		armour = 5;
+		stamina = 100;
+	}
+	//attack logic the same as Character
+	// 
+	// Normal attack
+	int normalAttack() {
+		int damageDealt = dmg - armour;
+		if (damageDealt < 0) {
+			damageDealt = 0;
+		}
+		return damageDealt;
+	}
+
+	// Powerful attack
+	int powerfulAttack() {
+		if (stamina >= 20) {
+			stamina -= 20;
+			int damageDealt = 2 * (dmg - armour);
+			if (damageDealt < 0) {
+				damageDealt = 0;
+			}
+			return damageDealt;
+		}
+		else {
+			std::cout << "Not enough stamina for a powerful attack!" << std::endl;
+			return 0;
+		}
+	}
+};
+
+//Weapons and dammage
 class Weapons {
 public:
 	enum Swords {
@@ -20,6 +60,7 @@ public:
 	};
 };
 
+//status and points
 class Status {
 public:
 	int sHp, sDmg, sArmour, sStamina;
@@ -68,6 +109,7 @@ public:
 	}
 };
 
+//Character and stats
 class Character:public Status {
 private:
 	int hp, dmg, armour, stamina;
@@ -79,11 +121,13 @@ public:
 		stamina = 100;
 	}
 	void seeStats() {
+		system("cls");
 		std::cout << "Stats" << "\n"
 			<< "Hp: " << hp << "\n"
-			<< "Armour: " << armour <<"\n"
+			<< "Armour: " << armour << "\n"
 			<< "Damage: " << dmg << "\n"
-			<< "Stamina: " << stamina << "\n";
+			<< "Stamina: " << stamina << "\n\n";
+		
 	}
 	void updateStats() {
 		hp = hp + sHp * 15;
@@ -91,20 +135,47 @@ public:
 		armour = armour + sArmour * 3;
 		stamina = stamina + sStamina * 10;
 	}
+	//add attack logic
+	//
+	// Normal attack
+	int normalAttack() {
+		int damageDealt = dmg - armour;
+		if (damageDealt < 0) {
+			damageDealt = 0;
+		}
+		return damageDealt;
+	}
+
+	// Powerful attack
+	int powerfulAttack() {
+		if (stamina >= 20) {
+			stamina -= 20;
+			int damageDealt = 2 * (dmg - armour);
+			if (damageDealt < 0) {
+				damageDealt = 0;
+			}
+			return damageDealt;
+		}
+		else {
+			std::cout << "Not enough stamina for a powerful attack!" << std::endl;
+			return 0;
+		}
+	}
 };
 
 class StartGame {
 public:
+	//fight system
+	void fightBoss() {
+		Boss boss;
+		
+	}
 
 	//main menu system
 	void printMain(Character c) {
 		system("cls");
-		std::cout << "Menu!\n"
-			<<"(1)Fight Boss\n"
-			<<"(2)See stats\n"
-			<<"(3)Add points\n"
-			<<"(4)Shop\n"
-			<<"(5)Exit Game!\n";
+		std::string text = "Menu!\n(1)Fight Boss\n(2)See stats\n(3)Add points\n(4)Shop\n(5)Exit Game!\n";
+		std::cout << text;
 
 		int option;
 
@@ -118,6 +189,7 @@ public:
 			if (ss >> option) {
 				if (option == 1) {
 					
+					fightBoss();
 
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -125,7 +197,7 @@ public:
 				}
 				else if (option == 2) {
 					c.seeStats();
-
+					std::cout<<text;
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 					std::cin >> input;
@@ -239,7 +311,7 @@ public:
 		}
 	}
 
-
+	//START GAME
 	StartGame() {
 		std::cout << "Welcome to fight the boss cmd game\n";
 		Character createCharacter;
@@ -250,6 +322,6 @@ public:
 };
 
 int main() {
-	StartGame start;
-	std::cout << "Hello";
+	StartGame start; //init
+	std::cout << "";
 }
