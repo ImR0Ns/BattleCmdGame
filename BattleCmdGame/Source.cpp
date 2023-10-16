@@ -5,7 +5,6 @@
 class Boss {
 public:
 	int hp, dmg, armour, stamina;
-	//test
 	int bossLevel = 1;
 	Boss() {
 		hp = 100;
@@ -16,13 +15,14 @@ public:
 	//attack logic the same as Character
 	// 
 	// Normal attack
-	int normalAttack() {
+	/*void normalAttack(Character& c) {
 		int damageDealt = dmg - armour;
 		if (damageDealt < 0) {
 			damageDealt = 0;
 		}
-		return damageDealt;
+		c.hp -= damageDealt;
 	}
+	*/
 
 	// Powerful attack
 	int powerfulAttack() {
@@ -112,9 +112,8 @@ public:
 
 //Character and stats
 class Character:public Status {
-private:
-	int hp, dmg, armour, stamina;
 public:
+	int hp, dmg, armour, stamina;
 	Character() {
 		hp = 100;
 		dmg = 10;
@@ -139,12 +138,13 @@ public:
 	//add attack logic
 	//
 	// Normal attack
-	int normalAttack() {
+	void normalAttack(Boss& b) {
 		int damageDealt = dmg - armour;
 		if (damageDealt < 0) {
 			damageDealt = 0;
 		}
-		return damageDealt;
+		b.hp -= damageDealt;
+		std::cout << "Your hp: " << hp << "\nEnemy hp: " << b.hp << "\n";
 	}
 
 	// Powerful attack
@@ -167,9 +167,43 @@ public:
 class StartGame {
 public:
 	//fight system
-	void fightBoss() {
+	void fightBoss(Character c) {
+		//init boss
 		Boss boss;
-		
+		std::cout << "Your hp: " << c.hp << "\nEnemy hp: " << boss.hp << "\n";
+
+		int choice;
+		bool active = true;
+
+		while (active) {
+			std::cout << "Choose your action:" << std::endl;
+			std::cout << "(1)Normal Attack | 0 stamina" << std::endl;
+			std::cout << "(2)Powerful Attack | 20 stamina" << std::endl;
+			std::cout << "(3)Exit" << std::endl;
+
+			std::cin >> choice;
+
+			if (std::cin.fail() || choice < 1 || choice > 3) {
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::cout << "Invalid choice. Please enter a number between 1 and 3." << std::endl;
+			}
+			else {
+				// Valid choice
+				switch (choice) {
+				case 1:
+					c.normalAttack(boss);
+					break;
+				case 2:
+					
+					break;
+				case 3:
+					std::cout << "Exit me";
+					active = false;
+					break;
+				}
+			}
+		}
 	}
 
 	//main menu system
@@ -190,29 +224,24 @@ public:
 			if (ss >> option) {
 				if (option == 1) {
 					
-					fightBoss();
-
-					std::cin.clear();
-					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-					std::cin >> input;
+					fightBoss(c);
+					break;
 				}
 				else if (option == 2) {
+
 					c.seeStats();
 					std::cout<<text;
+
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 					std::cin >> input;
 				}
 				else if (option == 3) {
-					
 					addStatus(c);
-
-					std::cin.clear();
-					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-					std::cin >> input;
+					break;
 				}
 				else if (option == 4) {
-					
+					//in work
 
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
