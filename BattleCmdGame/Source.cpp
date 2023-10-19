@@ -1,5 +1,9 @@
 #include <iostream>
 #include <sstream>
+#include <chrono>
+#include <thread>
+
+void clearData();//for clear cmd
 
 //Boss class
 class Boss {
@@ -15,14 +19,14 @@ public:
 	//attack logic the same as Character
 	// 
 	// Normal attack
-	/*void normalAttack(Character& c) {
+	int normalAttack() {
 		int damageDealt = dmg - armour;
 		if (damageDealt < 0) {
 			damageDealt = 0;
 		}
-		c.hp -= damageDealt;
+		return damageDealt;
 	}
-	*/
+
 
 	// Powerful attack
 	int powerfulAttack() {
@@ -35,8 +39,7 @@ public:
 			return damageDealt;
 		}
 		else {
-			std::cout << "Not enough stamina for a powerful attack!" << std::endl;
-			return 0;
+			normalAttack();
 		}
 	}
 };
@@ -121,7 +124,7 @@ public:
 		stamina = 100;
 	}
 	void seeStats() {
-		system("cls");
+		clearData();
 		std::cout << "Stats" << "\n"
 			<< "Hp: " << hp << "\n"
 			<< "Armour: " << armour << "\n"
@@ -138,13 +141,12 @@ public:
 	//add attack logic
 	//
 	// Normal attack
-	void normalAttack(Boss& b) {
+	int normalAttack() {
 		int damageDealt = dmg - armour;
 		if (damageDealt < 0) {
 			damageDealt = 0;
 		}
-		b.hp -= damageDealt;
-		std::cout << "Your hp: " << hp << "\nEnemy hp: " << b.hp << "\n";
+		return damageDealt;
 	}
 
 	// Powerful attack
@@ -158,8 +160,7 @@ public:
 			return damageDealt;
 		}
 		else {
-			std::cout << "Not enough stamina for a powerful attack!" << std::endl;
-			return 0;
+			normalAttack();
 		}
 	}
 };
@@ -167,15 +168,37 @@ public:
 class StartGame {
 public:
 	//fight system
+	void attackBetween(Character& c, Boss& b, int attackPower) {
+
+		int bossDmg = b.powerfulAttack(); //the boss will use his powerfull attack till he has no stamina
+		int dmg = 0;
+
+
+		if (attackPower == 1) {
+			dmg = c.normalAttack();
+		}
+		else {
+			dmg = c.powerfulAttack();
+		}
+
+		c.hp -= bossDmg;
+		b.hp -= dmg;
+		clearData();
+
+		std::cout << "You did " << dmg << " to the boss!\n"
+			<< "He did " << bossDmg << " to you\n";
+	}
+
 	void fightBoss(Character c) {
+		clearData();
 		//init boss
 		Boss boss;
-		std::cout << "Your hp: " << c.hp << "\nEnemy hp: " << boss.hp << "\n";
 
 		int choice;
 		bool active = true;
 
-		while (active) {
+		while (active && c.hp > 0 && boss.hp > 0) {
+			std::cout << "Your hp: " << c.hp << "\nEnemy hp: " << boss.hp << "\n";
 			std::cout << "Choose your action:" << std::endl;
 			std::cout << "(1)Normal Attack | 0 stamina" << std::endl;
 			std::cout << "(2)Powerful Attack | 20 stamina" << std::endl;
@@ -192,24 +215,38 @@ public:
 				// Valid choice
 				switch (choice) {
 				case 1:
-					c.normalAttack(boss);
+					attackBetween(c, boss, 1);
 					break;
 				case 2:
-					
+					attackBetween(c, boss, 2);
 					break;
 				case 3:
-					std::cout << "Exit me";
 					active = false;
+					printMain(c);
 					break;
 				}
 			}
 		}
+		//clear data 
+		clearData();
+		//show winning
+		if (boss.hp <= 0) {
+			std::cout << "You won! (2 stats points | 1000 money)\n";
+		}
+		else {
+			std::cout << "The Boss won! (0 stats point | 150 money)\n";
+		}
+		//sleep for 5 seconds to look at your prize
+		std::cout << "You will be redirected to the main page in " << 5 << " seconds...\n";
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+		//go to main
+		printMain(c);
 	}
 
 	//main menu system
 	void printMain(Character c) {
-		system("cls");
-		std::string text = "Menu!\n(1)Fight Boss\n(2)See stats\n(3)Add points\n(4)Shop\n(5)Exit Game!\n";
+		clearData();
+		std::string text = "Menu!\n(1)Fight Boss\n(2)See stats\n(3)Add points | Available points " + std::to_string(c.points) + "\n(4)Shop\n(5)Exit Game!\n";
 		std::cout << text;
 
 		int option;
@@ -269,7 +306,7 @@ public:
 
 	//status system
 	void statsPrint(Character c) {
-		system("cls");
+		clearData();
 		std::cout << "Add status | Points: " << c.points << "\n"
 			<< "(1)Hp points: " << c.sHp << "\n"
 			<< "(2)Damage points: " << c.sDmg << "\n"
@@ -343,10 +380,8 @@ public:
 
 	//START GAME
 	StartGame() {
-		std::cout << "Welcome to fight the boss cmd game\n";
 		Character createCharacter;
 		addStatus(createCharacter);
-
 	}
 
 };
@@ -354,4 +389,8 @@ public:
 int main() {
 	StartGame start; //init
 	std::cout << "";
+}
+
+void clearData() {
+	system("cls");
 }
