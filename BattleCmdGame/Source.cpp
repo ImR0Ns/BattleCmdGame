@@ -3,8 +3,16 @@
 #include <chrono>
 #include <thread>
 
+/*
+	Next Update:
+	Moneyyy - integration and Shop
+*/
+
+
 void clearData();//for clear cmd
 
+// 
+// 
 //Boss class
 class Boss {
 public:
@@ -16,11 +24,20 @@ public:
 		armour = 5;
 		stamina = 100;
 	}
+	//bossLevel and update
+	void bossLvl() {
+		bossLevel++;
+		hp = 100 + bossLevel * 25;
+		dmg = 10 + bossLevel * 25;
+		armour = 10 + bossLevel * 25;
+		stamina = 100 + bossLevel * 25;
+	}
+
 	//attack logic the same as Character
 	// 
 	// Normal attack
-	int normalAttack() {
-		int damageDealt = dmg - armour;
+	int normalAttack(int enemyArmour) {
+		int damageDealt = dmg - enemyArmour;
 		if (damageDealt < 0) {
 			damageDealt = 0;
 		}
@@ -29,17 +46,17 @@ public:
 
 
 	// Powerful attack
-	int powerfulAttack() {
+	int powerfulAttack(int enemyArmour) {
 		if (stamina >= 20) {
 			stamina -= 20;
-			int damageDealt = 2 * (dmg - armour);
+			int damageDealt = 2 * (dmg - enemyArmour);
 			if (damageDealt < 0) {
 				damageDealt = 0;
 			}
 			return damageDealt;
 		}
 		else {
-			normalAttack();
+			normalAttack(enemyArmour);
 		}
 	}
 };
@@ -135,50 +152,51 @@ public:
 	void updateStats() {
 		hp = hp + sHp * 15;
 		dmg = dmg + sDmg * 2;
-		armour = armour + sArmour * 3;
+		armour = armour + sArmour * 1;
 		stamina = stamina + sStamina * 10;
 	}
-	//add attack logic
-	//
 	// Normal attack
-	int normalAttack() {
-		int damageDealt = dmg - armour;
+	int normalAttack(int enemyArmour) {
+		int damageDealt = dmg - enemyArmour;
 		if (damageDealt < 0) {
 			damageDealt = 0;
 		}
 		return damageDealt;
 	}
 
+
 	// Powerful attack
-	int powerfulAttack() {
+	int powerfulAttack(int enemyArmour) {
 		if (stamina >= 20) {
 			stamina -= 20;
-			int damageDealt = 2 * (dmg - armour);
+			int damageDealt = 2 * (dmg - enemyArmour);
 			if (damageDealt < 0) {
 				damageDealt = 0;
 			}
 			return damageDealt;
 		}
 		else {
-			normalAttack();
+			normalAttack(enemyArmour);
 		}
 	}
 };
 
 class StartGame {
 public:
+	//init boss
+	Boss boss;
+
 	//fight system
 	void attackBetween(Character& c, Boss& b, int attackPower) {
 
-		int bossDmg = b.powerfulAttack(); //the boss will use his powerfull attack till he has no stamina
+		int bossDmg = b.powerfulAttack(c.armour); //the boss will use his powerfull attack till he has no stamina
 		int dmg = 0;
 
-
 		if (attackPower == 1) {
-			dmg = c.normalAttack();
+			dmg = c.normalAttack(b.armour);
 		}
 		else {
-			dmg = c.powerfulAttack();
+			dmg = c.powerfulAttack(b.armour);
 		}
 
 		c.hp -= bossDmg;
@@ -191,11 +209,10 @@ public:
 
 	void fightBoss(Character c) {
 		clearData();
-		//init boss
-		Boss boss;
 
 		int choice;
 		bool active = true;
+		int rememberHp = c.hp;
 
 		while (active && c.hp > 0 && boss.hp > 0) {
 			std::cout << "Your hp: " << c.hp << "\nEnemy hp: " << boss.hp << "\n";
@@ -231,11 +248,17 @@ public:
 		clearData();
 		//show winning
 		if (boss.hp <= 0) {
-			std::cout << "You won! (2 stats points | 1000 money)\n";
+			std::cout << "You won! (5 stats points | 1000 money)\n";
+			c.points += 5;
+			boss.bossLvl(); // update level and stats of boss
 		}
 		else {
-			std::cout << "The Boss won! (0 stats point | 150 money)\n";
+			std::cout << "The Boss won! (1 stats point | 150 money)\n";
+			c.points += 1;
 		}
+
+		c.hp = rememberHp; // restore full hp
+
 		//sleep for 5 seconds to look at your prize
 		std::cout << "You will be redirected to the main page in " << 5 << " seconds...\n";
 		std::this_thread::sleep_for(std::chrono::seconds(5));
