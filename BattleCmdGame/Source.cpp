@@ -3,183 +3,25 @@
 #include <chrono>
 #include <thread>
 
+//include class headers
+#include "Boss.h"
+#include "Weapons.h"
+#include "Status.h"
+#include "Character.h"
+
+
+
 /*
 	Next Update:
 	Moneyyy - integration and Shop
+
+	Bugs:
+	Stamina after battle is not recovering
+	The updateStats is updating too much and double damage.
+
 */
 
-
-void clearData();//for clear cmd
-
-// 
-// 
-//Boss class
-class Boss {
-public:
-	int hp, dmg, armour, stamina;
-	int bossLevel = 1;
-	Boss() {
-		hp = 100;
-		dmg = 10;
-		armour = 5;
-		stamina = 100;
-	}
-	//bossLevel and update
-	void bossLvl() {
-		bossLevel++;
-		hp = 100 + bossLevel * 25;
-		dmg = 10 + bossLevel * 25;
-		armour = 10 + bossLevel * 25;
-		stamina = 100 + bossLevel * 25;
-	}
-
-	//attack logic the same as Character
-	// 
-	// Normal attack
-	int normalAttack(int enemyArmour) {
-		int damageDealt = dmg - enemyArmour;
-		if (damageDealt < 0) {
-			damageDealt = 0;
-		}
-		return damageDealt;
-	}
-
-
-	// Powerful attack
-	int powerfulAttack(int enemyArmour) {
-		if (stamina >= 20) {
-			stamina -= 20;
-			int damageDealt = 2 * (dmg - enemyArmour);
-			if (damageDealt < 0) {
-				damageDealt = 0;
-			}
-			return damageDealt;
-		}
-		else {
-			normalAttack(enemyArmour);
-		}
-	}
-};
-
-//Weapons and dammage
-class Weapons {
-public:
-	enum Swords {
-		swordOne = 10,
-		swordTwo = 20,
-		swordThree = 30
-	};
-	enum Axe {
-		axeOne = 12,
-		axeTwo = 24,
-		axeThree = 35
-	};
-	enum Bow {
-		bowOne = 15,
-		bowTwo = 30,
-		bowThree = 45
-	};
-};
-
-//status and points
-class Status {
-public:
-	int sHp, sDmg, sArmour, sStamina;
-	int points = 5;
-	Status() {
-		sHp = 0;
-		sDmg = 0;
-		sArmour = 0;
-		sStamina = 0;
-	}
-	void addHp() {
-		if (points < 1) {
-			std::cout << "Not enought points!\n";
-		}
-		else {
-			sHp++;
-			points--;
-		}
-	}
-	void addDmg() {
-		if (points < 1) {
-			std::cout << "Not enought points!\n";
-		}
-		else {
-			sDmg++;
-			points--;
-		}
-	}
-	void addArmour() {
-		if (points < 1) {
-			std::cout << "Not enought points!\n";
-		}
-		else {
-			sArmour++;
-			points--;
-		}
-	}
-	void addStamina() {
-		if (points < 1) {
-			std::cout << "Not enought points!\n";
-		}
-		else {
-			sStamina++;
-			points--;
-		}
-	}
-};
-
-//Character and stats
-class Character:public Status {
-public:
-	int hp, dmg, armour, stamina;
-	Character() {
-		hp = 100;
-		dmg = 10;
-		armour = 5;
-		stamina = 100;
-	}
-	void seeStats() {
-		clearData();
-		std::cout << "Stats" << "\n"
-			<< "Hp: " << hp << "\n"
-			<< "Armour: " << armour << "\n"
-			<< "Damage: " << dmg << "\n"
-			<< "Stamina: " << stamina << "\n\n";
-		
-	}
-	void updateStats() {
-		hp = hp + sHp * 15;
-		dmg = dmg + sDmg * 2;
-		armour = armour + sArmour * 1;
-		stamina = stamina + sStamina * 10;
-	}
-	// Normal attack
-	int normalAttack(int enemyArmour) {
-		int damageDealt = dmg - enemyArmour;
-		if (damageDealt < 0) {
-			damageDealt = 0;
-		}
-		return damageDealt;
-	}
-
-
-	// Powerful attack
-	int powerfulAttack(int enemyArmour) {
-		if (stamina >= 20) {
-			stamina -= 20;
-			int damageDealt = 2 * (dmg - enemyArmour);
-			if (damageDealt < 0) {
-				damageDealt = 0;
-			}
-			return damageDealt;
-		}
-		else {
-			normalAttack(enemyArmour);
-		}
-	}
-};
+void clearData(); //for clear cmd
 
 class StartGame {
 public:
@@ -255,6 +97,7 @@ public:
 		else {
 			std::cout << "The Boss won! (1 stats point | 150 money)\n";
 			c.points += 1;
+			//we need to reset the hp for the boss too!
 		}
 
 		c.hp = rememberHp; // restore full hp
