@@ -5,6 +5,7 @@ Character::Character() {
 	dmg = 10;
 	armour = 5;
 	stamina = 100;
+	money = 100;
 }
 void Character::seeStats() {
 	system("cls");
@@ -16,11 +17,23 @@ void Character::seeStats() {
 
 }
 void Character::updateStats() {
-	hp = hp + sHp * 15;
-	dmg = dmg + sDmg * 2;
-	armour = armour + sArmour * 1;
-	stamina = stamina + sStamina * 10;
+	//contructor default values + points * int
+	hp = 100 + sHp * 15;
+	dmg = 10 + sDmg * 2;
+	armour = 5 + sArmour * 3;
+	stamina = 100 + sStamina * 10;
 }
+//status system
+void Character::statsPrint() {
+	system("cls");
+	std::cout << "Add status | Points: " << points << "\n"
+		<< "(1)Hp points: " << sHp << "\n"
+		<< "(2)Damage points: " << sDmg << "\n"
+		<< "(3)Armour points: " << sArmour << "\n"
+		<< "(4)Stamina points: " << sStamina << "\n"
+		<< "(5)Go to main\n";
+}
+
 // Normal attack
 int Character::normalAttack(int enemyArmour) {
 	int damageDealt = dmg - enemyArmour;

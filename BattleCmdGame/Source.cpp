@@ -9,17 +9,14 @@
 #include "Status.h"
 #include "Character.h"
 
-
-
 /*
-	Next Update:
-	Moneyyy - integration and Shop
-
-	Bugs:
-	Stamina after battle is not recovering
-	The updateStats is updating too much and double damage.
-
+Tasks:
+Bugs:
+-Boss level up after beating not working anymore
+-If we enter fight boss and leave will not reset to normal
+-auto update hp to everyone
 */
+
 
 void clearData(); //for clear cmd
 
@@ -52,16 +49,22 @@ public:
 	void fightBoss(Character c) {
 		clearData();
 
+		//choises
 		int choice;
 		bool active = true;
+
+		//restore by default for boss too
 		int rememberHp = c.hp;
+		int rememberStamina = c.stamina;
+		int rememberHpBoss = boss.hp;
+		int rememmberStaminaBoss = boss.stamina;
 
 		while (active && c.hp > 0 && boss.hp > 0) {
 			std::cout << "Your hp: " << c.hp << "\nEnemy hp: " << boss.hp << "\n";
-			std::cout << "Choose your action:" << std::endl;
-			std::cout << "(1)Normal Attack | 0 stamina" << std::endl;
-			std::cout << "(2)Powerful Attack | 20 stamina" << std::endl;
-			std::cout << "(3)Exit" << std::endl;
+			std::cout << "Choose your action:\n";
+			std::cout << "(1)Normal Attack | 0 stamina\n";
+			std::cout << "(2)Powerful Attack | 20 stamina | "<<"Your stamina: " << c.stamina <<"\n";
+			std::cout << "(3)Exit\n";
 
 			std::cin >> choice;
 
@@ -86,6 +89,7 @@ public:
 				}
 			}
 		}
+
 		//clear data 
 		clearData();
 		//show winning
@@ -97,14 +101,18 @@ public:
 		else {
 			std::cout << "The Boss won! (1 stats point | 150 money)\n";
 			c.points += 1;
-			//we need to reset the hp for the boss too!
 		}
 
+		//we need to reset the hp for the boss too!
 		c.hp = rememberHp; // restore full hp
+		c.stamina = rememberStamina;
+		boss.hp = rememberHpBoss;
+		boss.stamina = rememmberStaminaBoss;
 
-		//sleep for 5 seconds to look at your prize
-		std::cout << "You will be redirected to the main page in " << 5 << " seconds...\n";
-		std::this_thread::sleep_for(std::chrono::seconds(5));
+
+		//sleep for 3 seconds to look at your prize
+		std::cout << "You will be redirected to the main page in " << 3 << " seconds...\n";
+		std::this_thread::sleep_for(std::chrono::seconds(3));
 		//go to main
 		printMain(c);
 	}
@@ -112,7 +120,7 @@ public:
 	//main menu system
 	void printMain(Character c) {
 		clearData();
-		std::string text = "Menu!\n(1)Fight Boss\n(2)See stats\n(3)Add points | Available points " + std::to_string(c.points) + "\n(4)Shop\n(5)Exit Game!\n";
+		std::string text = "Menu!\n(1)Fight Boss\n(2)See stats\n(3)Add points | Available points " + std::to_string(c.points) + "\n(4)Shop | Your Money " + std::to_string(c.money) + "\n(5)Exit Game!\n";
 		std::cout << text;
 
 		int option;
@@ -151,7 +159,7 @@ public:
 					std::cin >> input;
 				}
 				else if (option == 5) {
-					break;
+					exit(0);
 				}
 				else {
 					std::cout << "Not a valid option! Choose from 1 to 5: \n";
@@ -169,20 +177,9 @@ public:
 		}
 	}
 
-
-	//status system
-	void statsPrint(Character c) {
-		clearData();
-		std::cout << "Add status | Points: " << c.points << "\n"
-			<< "(1)Hp points: " << c.sHp << "\n"
-			<< "(2)Damage points: " << c.sDmg << "\n"
-			<< "(3)Armour points: " << c.sArmour << "\n"
-			<< "(4)Stamina points: " << c.sStamina << "\n"
-			<< "(5)Go to main\n";
-	}
 	void addStatus(Character c) {
 		int option;
-		statsPrint(c);
+		c.statsPrint();
 
 		// Read the input as a string
 		std::string input;
@@ -195,7 +192,7 @@ public:
 				if (option == 1) {
 					c.addHp();
 					c.updateStats();
-					statsPrint(c);
+					c.statsPrint();
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 					std::cin >> input;
@@ -203,7 +200,7 @@ public:
 				else if (option == 2) {
 					c.addDmg();
 					c.updateStats();
-					statsPrint(c);
+					c.statsPrint();
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 					std::cin >> input;
@@ -211,7 +208,7 @@ public:
 				else if (option == 3) {
 					c.addArmour();
 					c.updateStats();
-					statsPrint(c);
+					c.statsPrint();
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 					std::cin >> input;
@@ -219,7 +216,7 @@ public:
 				else if (option == 4) {
 					c.addStamina();
 					c.updateStats();
-					statsPrint(c);
+					c.statsPrint();
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 					std::cin >> input;
