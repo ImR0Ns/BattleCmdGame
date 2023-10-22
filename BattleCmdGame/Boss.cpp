@@ -5,14 +5,16 @@ Boss::Boss() {
 	dmg = 10;
 	armour = 5;
 	stamina = 100;
-	bossLevel = 1;
+	bossLevel = 0;
 }
-void Boss::bossLvl() {
-	bossLevel++;
+void Boss::updateStats() {
 	hp = 100 + bossLevel * 25;
 	dmg = 10 + bossLevel * 7;
-	armour = 10 + bossLevel * 3;
+	armour = 5 + bossLevel * 3;
 	stamina = 100 + bossLevel * 10;
+}
+void Boss::addBossLevel() {
+	bossLevel++;
 }
 int Boss::normalAttack(int enemyArmour) {
 	int damageDealt = dmg - enemyArmour;

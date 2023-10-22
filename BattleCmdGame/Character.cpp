@@ -33,6 +33,14 @@ void Character::statsPrint() {
 		<< "(4)Stamina points: " << sStamina << "\n"
 		<< "(5)Go to main\n";
 }
+//compare stats in fight mode
+void Character::compareStats(Boss boss){
+	std::cout << "Character Stats" << "\t\t\t\t" << "Boss Stats" << "\n"
+		<< "Hp: " << hp << "\t\t\t\t\t" << "Hp: " << boss.hp << "\n"
+		<< "Armour: " << armour << "\t\t\t\t" << "Armour: " << boss.armour << "\n"
+		<< "Damage: " << dmg << "\t\t\t\t" << "Damage: " << boss.dmg << "\n"
+		<< "Stamina: " << stamina << "\t\t\t\t" << "Stamina: " << boss.stamina << "\n\n";
+}
 
 // Normal attack
 int Character::normalAttack(int enemyArmour) {

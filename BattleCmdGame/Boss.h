@@ -4,7 +4,8 @@ public:
 	int hp, dmg, armour, stamina, bossLevel;
 	Boss();
 	//bossLevel and update
-	void bossLvl();
+	void updateStats();
+	void addBossLevel();
 	//attack logic the same as Character
 	// 
 	// Normal attack

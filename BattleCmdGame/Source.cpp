@@ -9,14 +9,6 @@
 #include "Status.h"
 #include "Character.h"
 
-/*
-Tasks:
-Bugs:
--Boss level up after beating not working anymore
--If we enter fight boss and leave will not reset to normal
--auto update hp to everyone
-*/
-
 
 void clearData(); //for clear cmd
 
@@ -40,10 +32,11 @@ public:
 
 		c.hp -= bossDmg;
 		b.hp -= dmg;
+
 		clearData();
 
 		std::cout << "You did " << dmg << " to the boss!\n"
-			<< "He did " << bossDmg << " to you\n";
+			<< "He did " << bossDmg << " to you\n\n";
 	}
 
 	void fightBoss(Character c) {
@@ -53,14 +46,9 @@ public:
 		int choice;
 		bool active = true;
 
-		//restore by default for boss too
-		int rememberHp = c.hp;
-		int rememberStamina = c.stamina;
-		int rememberHpBoss = boss.hp;
-		int rememmberStaminaBoss = boss.stamina;
 
 		while (active && c.hp > 0 && boss.hp > 0) {
-			std::cout << "Your hp: " << c.hp << "\nEnemy hp: " << boss.hp << "\n";
+			c.compareStats(boss); // Show at the start stats
 			std::cout << "Choose your action:\n";
 			std::cout << "(1)Normal Attack | 0 stamina\n";
 			std::cout << "(2)Powerful Attack | 20 stamina | "<<"Your stamina: " << c.stamina <<"\n";
@@ -84,6 +72,10 @@ public:
 					break;
 				case 3:
 					active = false;
+					//we need to reset again stats because if we leave the hp will remain how it was
+					c.updateStats();
+					boss.updateStats();
+					//go to main
 					printMain(c);
 					break;
 				}
@@ -96,18 +88,17 @@ public:
 		if (boss.hp <= 0) {
 			std::cout << "You won! (5 stats points | 1000 money)\n";
 			c.points += 5;
-			boss.bossLvl(); // update level and stats of boss
+			boss.addBossLevel(); // update level
 		}
 		else {
 			std::cout << "The Boss won! (1 stats point | 150 money)\n";
 			c.points += 1;
 		}
 
-		//we need to reset the hp for the boss too!
-		c.hp = rememberHp; // restore full hp
-		c.stamina = rememberStamina;
-		boss.hp = rememberHpBoss;
-		boss.stamina = rememmberStaminaBoss;
+		//we need to reset the hp of char and boss to
+		c.updateStats();
+		boss.updateStats();
+
 
 
 		//sleep for 3 seconds to look at your prize
