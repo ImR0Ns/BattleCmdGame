@@ -1,12 +1,6 @@
 #include "Character.h"
 
-Character::Character() {
-	hp = 100;
-	dmg = 10;
-	armour = 5;
-	stamina = 100;
-	money = 100;
-}
+Character::Character() : hp(100), dmg(10), armour(5), stamina(100), money(100){ } // initializer list
 void Character::seeStats() {
 	system("cls");
 	std::cout << "Stats" << "\n"
@@ -35,7 +29,7 @@ void Character::statsPrint() {
 }
 //compare stats in fight mode
 void Character::compareStats(Boss boss){
-	std::cout << "Character Stats" << "\t\t\t\t" << "Boss Stats" << "\n"
+	std::cout << "Character Stats" << "\t\t\t\t" << "Boss Stats | Level "<< boss.bossLevel + 1 << "\n"
 		<< "Hp: " << hp << "\t\t\t\t\t" << "Hp: " << boss.hp << "\n"
 		<< "Armour: " << armour << "\t\t\t\t" << "Armour: " << boss.armour << "\n"
 		<< "Damage: " << dmg << "\t\t\t\t" << "Damage: " << boss.dmg << "\n"

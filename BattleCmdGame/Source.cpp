@@ -12,6 +12,14 @@
 
 void clearData(); //for clear cmd
 
+class Shop {
+public:
+	int swords[3] = { 10, 20, 30 };
+	int axes[3] = { 12, 24, 36 };
+	int bows[3] = { 25, 45, 60 };
+
+};
+
 class StartGame {
 public:
 	//init boss
@@ -38,8 +46,7 @@ public:
 		std::cout << "You did " << dmg << " to the boss!\n"
 			<< "He did " << bossDmg << " to you\n\n";
 	}
-
-	void fightBoss(Character c) {
+	void fightBoss(Character& c) {
 		clearData();
 
 		//choises
@@ -88,11 +95,13 @@ public:
 		if (boss.hp <= 0) {
 			std::cout << "You won! (5 stats points | 1000 money)\n";
 			c.points += 5;
+			c.money += 1000;
 			boss.addBossLevel(); // update level
 		}
 		else {
 			std::cout << "The Boss won! (1 stats point | 150 money)\n";
 			c.points += 1;
+			c.money += 150;
 		}
 
 		//we need to reset the hp of char and boss to
@@ -109,7 +118,7 @@ public:
 	}
 
 	//main menu system
-	void printMain(Character c) {
+	void printMain(Character& c) {
 		clearData();
 		std::string text = "Menu!\n(1)Fight Boss\n(2)See stats\n(3)Add points | Available points " + std::to_string(c.points) + "\n(4)Shop | Your Money " + std::to_string(c.money) + "\n(5)Exit Game!\n";
 		std::cout << text;
@@ -167,8 +176,7 @@ public:
 			}
 		}
 	}
-
-	void addStatus(Character c) {
+	void addStatus(Character& c) {
 		int option;
 		c.statsPrint();
 
@@ -231,6 +239,44 @@ public:
 			}
 		}
 	}
+
+	//shop menu
+	/*
+	void showMainShop() {
+		int choice;
+		while (true) {
+			std::cout << "Choose your action:\n";
+			std::cout << "(1)Swords Shop\n";
+			std::cout << "(2)Axes Shop\n";
+			std::cout << "(3)Bows Shop\n";
+			std::cout << "(4)Exit\n";
+
+			std::cin >> choice;
+
+			if (std::cin.fail() || choice < 1 || choice > 4) {
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::cout << "Invalid choice. Please enter a number between 1 and 3." << std::endl;
+			}
+			else {
+				// Valid choice
+				switch (choice) {
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+				case 4:
+
+					break;
+				}
+			}
+		}
+	}*/
 
 	//START GAME
 	StartGame() {

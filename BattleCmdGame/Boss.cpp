@@ -1,12 +1,6 @@
 #include "Boss.h"
 
-Boss::Boss() {
-	hp = 100;
-	dmg = 10;
-	armour = 5;
-	stamina = 100;
-	bossLevel = 0;
-}
+Boss::Boss() : hp(100), dmg(10), armour(5), stamina(100), bossLevel(0){}
 void Boss::updateStats() {
 	hp = 100 + bossLevel * 25;
 	dmg = 10 + bossLevel * 7;

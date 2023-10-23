@@ -1,13 +1,7 @@
 #include "Status.h"
 #include <iostream>
 
-Status::Status() {
-	points = 5;
-	sHp = 0;
-	sDmg = 0;
-	sArmour = 0;
-	sStamina = 0;
-}
+Status::Status() : points(5), sHp(0), sDmg(0), sArmour(0), sStamina(0) {}
 void Status::addHp() {
 	if (points < 1) {
 		std::cout << "Not enought points!\n";
