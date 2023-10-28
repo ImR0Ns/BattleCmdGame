@@ -8,22 +8,18 @@
 #include "Weapons.h"
 #include "Status.h"
 #include "Character.h"
+#include "Shop.h"
 
 
 void clearData(); //for clear cmd
 
-class Shop {
-public:
-	int swords[3] = { 10, 20, 30 };
-	int axes[3] = { 12, 24, 36 };
-	int bows[3] = { 25, 45, 60 };
-
-};
-
 class StartGame {
 public:
+
 	//init boss
 	Boss boss;
+	//init shop
+	Shop shop;
 
 	//fight system
 	void attackBetween(Character& c, Boss& b, int attackPower) {
@@ -152,7 +148,8 @@ public:
 					break;
 				}
 				else if (option == 4) {
-					//in work
+					showMainShop(c);
+
 
 					std::cin.clear();
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -241,22 +238,22 @@ public:
 	}
 
 	//shop menu
-	/*
-	void showMainShop() {
+	void printSwords(Character& c) {
+		clearData();
+
 		int choice;
 		while (true) {
-			std::cout << "Choose your action:\n";
-			std::cout << "(1)Swords Shop\n";
-			std::cout << "(2)Axes Shop\n";
-			std::cout << "(3)Bows Shop\n";
-			std::cout << "(4)Exit\n";
+			std::cout << "(1)Sword 1: " << shop.swords[0] << " damage | $10.000\n"
+				<< "(2)Sword 2: " << shop.swords[1] << " damage | $20.000\n"
+				<< "(3)Sword 3: " << shop.swords[2] << " damage | $30.000\n"
+				<< "(4)Go to Shop Menu\n";
 
 			std::cin >> choice;
 
 			if (std::cin.fail() || choice < 1 || choice > 4) {
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-				std::cout << "Invalid choice. Please enter a number between 1 and 3." << std::endl;
+				std::cout << "Invalid choice. Please enter a number between 1 and 4." << std::endl;
 			}
 			else {
 				// Valid choice
@@ -271,12 +268,124 @@ public:
 
 					break;
 				case 4:
-
+					showMainShop(c);
 					break;
 				}
 			}
 		}
-	}*/
+	}
+	void printAxes(Character& c) {
+		clearData();
+
+		int choice;
+		while (true) {
+			std::cout << "(1)Axe 1: " << shop.axes[0] << " damage | $10.000\n"
+				<< "(2)Axe 2: " << shop.axes[1] << " damage | $20.000\n"
+				<< "(3)Axe 3: " << shop.axes[2] << " damage | $30.000\n"
+				<< "(4)Go to Shop Menu\n";
+
+			std::cin >> choice;
+
+			if (std::cin.fail() || choice < 1 || choice > 4) {
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::cout << "Invalid choice. Please enter a number between 1 and 4." << std::endl;
+			}
+			else {
+				// Valid choice
+				switch (choice) {
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+				case 4:
+					showMainShop(c);
+					break;
+				}
+			}
+		}
+	}
+	void printBows(Character& c) {
+		clearData();
+
+		int choice;
+		while (true) {
+			std::cout << "(1)Bow 1: " << shop.bows[0] << " damage | $10.000\n"
+				<< "(2)Bow 2: " << shop.bows[1] << " damage | $20.000\n"
+				<< "(3)Bow 3: " << shop.bows[2] << " damage | $30.000\n"
+				<< "(4)Go to Shop Menu\n";
+
+			std::cin >> choice;
+
+			if (std::cin.fail() || choice < 1 || choice > 4) {
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::cout << "Invalid choice. Please enter a number between 1 and 4." << std::endl;
+			}
+			else {
+				// Valid choice
+				switch (choice) {
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+				case 4:
+					showMainShop(c);
+					break;
+				}
+			}
+		}
+	}
+	void showMainShop(Character& c) {
+		//clear cmd
+		clearData();
+
+		int choice;
+		while (true) {
+			std::cout << "Choose your action:\n";
+			std::cout << "(1)Swords Shop\n";
+			std::cout << "(2)Axes Shop\n";
+			std::cout << "(3)Bows Shop\n";
+			std::cout << "(4)Go to main menu\n";
+
+			std::cin >> choice;
+
+			if (std::cin.fail() || choice < 1 || choice > 4) {
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::cout << "Invalid choice. Please enter a number between 1 and 4." << std::endl;
+			}
+			else {
+				// Valid choice
+				switch (choice) {
+				case 1:
+					printSwords(c);
+					break;
+				case 2:
+					printAxes(c);
+					break;
+				case 3:
+					printBows(c);
+					break;
+				case 4:
+					printMain(c);
+					break;
+				}
+			}
+		}
+	}
+
+
 
 	//START GAME
 	StartGame() {
