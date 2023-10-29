@@ -5,7 +5,7 @@
 
 class Character :public Status {
 public:
-	int hp, dmg, armour, stamina, money;
+	int hp, dmg, armour, stamina, money, itemPower;
 	Character();
 	void seeStats();
 	void updateStats();

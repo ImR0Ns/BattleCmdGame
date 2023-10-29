@@ -259,13 +259,13 @@ public:
 				// Valid choice
 				switch (choice) {
 				case 1:
-
+					shop.checkMoney(c, 10000, 0, shop.swords[0]);
 					break;
 				case 2:
-
+					shop.checkMoney(c, 20000, 1, shop.swords[1]);
 					break;
 				case 3:
-
+					shop.checkMoney(c, 30000, 2, shop.swords[2]);
 					break;
 				case 4:
 					showMainShop(c);
