@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character() : hp(100), dmg(10), armour(5), stamina(100), money(100000), itemPower(0){ } // initializer list
+Character::Character() : hp(100), dmg(10), armour(5), stamina(100), money(1000), itemPower(0){ } // initializer list
 void Character::seeStats() {
 	system("cls");
 	std::cout << "Stats" << "\n"
