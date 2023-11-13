@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
-#include "Status.h"
+#include "StatusPoints.h"
 #include "Boss.h"
 
-class Character :public Status {
+class Character :public StatusPoints {
 public:
 	int hp, dmg, armour, stamina, money, itemPower;
 	Character();

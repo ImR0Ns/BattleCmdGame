@@ -1,9 +1,9 @@
 #pragma once
-class Status {
+class StatusPoints {
 public:
 	int sHp, sDmg, sArmour, sStamina;
 	int points;
-	Status();
+	StatusPoints();
 	void addHp();
 	void addDmg();
 	void addArmour();

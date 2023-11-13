@@ -6,7 +6,7 @@
 //include class headers
 #include "Boss.h"
 #include "Weapons.h"
-#include "Status.h"
+#include "StatusPoints.h"
 #include "Character.h"
 #include "Shop.h"
 

@@ -1,8 +1,8 @@
-#include "Status.h"
+#include "StatusPoints.h"
 #include <iostream>
 
-Status::Status() : points(5), sHp(0), sDmg(0), sArmour(0), sStamina(0) {}
-void Status::addHp() {
+StatusPoints::StatusPoints() : points(5), sHp(0), sDmg(0), sArmour(0), sStamina(0) {}
+void StatusPoints::addHp() {
 	if (points < 1) {
 		std::cout << "Not enought points!\n";
 	}
@@ -11,7 +11,7 @@ void Status::addHp() {
 		points--;
 	}
 }
-void Status::addDmg() {
+void StatusPoints::addDmg() {
 	if (points < 1) {
 		std::cout << "Not enought points!\n";
 	}
@@ -20,7 +20,7 @@ void Status::addDmg() {
 		points--;
 	}
 }
-void Status::addArmour() {
+void StatusPoints::addArmour() {
 	if (points < 1) {
 		std::cout << "Not enought points!\n";
 	}
@@ -30,7 +30,7 @@ void Status::addArmour() {
 	}
 }
 
-void Status::addStamina() {
+void StatusPoints::addStamina() {
 	if (points < 1) {
 		std::cout << "Not enought points!\n";
 	}
