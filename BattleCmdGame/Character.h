@@ -3,6 +3,8 @@
 #include "StatusPoints.h"
 #include "Boss.h"
 
+class Boss;
+
 class Character :public StatusPoints {
 public:
 	int hp, dmg, armour, stamina, money, itemPower;
@@ -10,9 +12,9 @@ public:
 	void seeStats();
 	void updateStats();
 	void statsPrint();
-	void compareStats(Boss boss);
+	void compareStats(Boss& boss);
 	// Normal attack
-	int normalAttack(int enemyArmour);
+	void normalAttack(Boss& boss);
 	// Powerful attack
-	int powerfulAttack(int enemyArmour);
+	void powerfulAttack(Boss& boss);
 };

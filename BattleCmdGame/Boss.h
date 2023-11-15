@@ -1,4 +1,9 @@
 #pragma once
+
+#include "Character.h";
+
+class Character;
+
 class Boss {
 public:
 	int hp, dmg, armour, stamina, bossLevel;
@@ -9,7 +14,7 @@ public:
 	//attack logic the same as Character
 	// 
 	// Normal attack
-	int normalAttack(int enemyArmour);
+	void normalAttack(Character& c);
 	// Powerful attack
-	int powerfulAttack(int enemyArmour);
+	void powerfulAttack(Character& c);
 };

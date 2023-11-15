@@ -22,26 +22,6 @@ public:
 	Shop shop;
 
 	//fight system
-	void attackBetween(Character& c, Boss& b, int attackPower) {
-
-		int bossDmg = b.powerfulAttack(c.armour); //the boss will use his powerfull attack till he has no stamina
-		int dmg = 0;
-
-		if (attackPower == 1) {
-			dmg = c.normalAttack(b.armour);
-		}
-		else {
-			dmg = c.powerfulAttack(b.armour);
-		}
-
-		c.hp -= bossDmg;
-		b.hp -= dmg;
-
-		clearData();
-
-		std::cout << "You did " << dmg << " to the boss!\n"
-			<< "He did " << bossDmg << " to you\n\n";
-	}
 	void fightBoss(Character& c) {
 		clearData();
 
@@ -68,10 +48,11 @@ public:
 				// Valid choice
 				switch (choice) {
 				case 1:
-					attackBetween(c, boss, 1);
+					c.normalAttack(boss);
 					break;
 				case 2:
-					attackBetween(c, boss, 2);
+					c.powerfulAttack(boss);
+
 					break;
 				case 3:
 					active = false;

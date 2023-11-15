@@ -28,7 +28,7 @@ void Character::statsPrint() {
 		<< "(5)Go to main\n";
 }
 //compare stats in fight mode
-void Character::compareStats(Boss boss){
+void Character::compareStats(Boss& boss){
 	std::cout << "Character Stats" << "\t\t\t\t" << "Boss Stats | Level "<< boss.bossLevel + 1 << "\n"
 		<< "Hp: " << hp << "\t\t\t\t\t" << "Hp: " << boss.hp << "\n"
 		<< "Armour: " << armour << "\t\t\t\t" << "Armour: " << boss.armour << "\n"
@@ -37,26 +37,30 @@ void Character::compareStats(Boss boss){
 }
 
 // Normal attack
-int Character::normalAttack(int enemyArmour) {
-	int damageDealt = (dmg + itemPower) - enemyArmour;
+void Character::normalAttack(Boss& boss) {
+	int damageDealt = (dmg + itemPower) - boss.armour;
 	if (damageDealt < 0) {
 		damageDealt = 0;
 	}
-	return damageDealt;
+	boss.hp -= damageDealt;
+	boss.powerfulAttack(*this); //*this -> dereference obj to get Character class
+	std::cout << "You did " << damageDealt << " to the boss!\n\n";
 }
 
 
 // Powerful attack
-int Character::powerfulAttack(int enemyArmour) {
+void Character::powerfulAttack(Boss& boss) {
 	if (stamina >= 20) {
 		stamina -= 20;
-		int damageDealt = 2 * ((dmg + itemPower) - enemyArmour);
+		int damageDealt = 2 * ((dmg + itemPower) - boss.armour);
 		if (damageDealt < 0) {
 			damageDealt = 0;
 		}
-		return damageDealt;
+		boss.hp -= damageDealt;
+		boss.powerfulAttack(*this);
+		std::cout << "You did " << damageDealt << " to the boss!\n\n";
 	}
 	else {
-		normalAttack(enemyArmour);
+		normalAttack(boss);
 	}
 }

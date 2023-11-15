@@ -1,4 +1,4 @@
-#include "Boss.h"
+#include "Boss.h";
 
 Boss::Boss() : hp(100), dmg(10), armour(5), stamina(100), bossLevel(0){}
 void Boss::updateStats() {
@@ -10,23 +10,27 @@ void Boss::updateStats() {
 void Boss::addBossLevel() {
 	bossLevel++;
 }
-int Boss::normalAttack(int enemyArmour) {
-	int damageDealt = dmg - enemyArmour;
+void Boss::normalAttack(Character& c) {
+	int damageDealt = dmg - c.armour;
 	if (damageDealt < 0) {
 		damageDealt = 0;
 	}
-	return damageDealt;
+	c.hp -= damageDealt;
+	system("cls");
+	std::cout << "He did " << damageDealt << " to you\n";
 }
-int Boss::powerfulAttack(int enemyArmour) {
+void Boss::powerfulAttack(Character& c) {
 	if (stamina >= 20) {
 		stamina -= 20;
-		int damageDealt = 2 * (dmg - enemyArmour);
+		int damageDealt = 2 * (dmg - c.armour);
 		if (damageDealt < 0) {
 			damageDealt = 0;
 		}
-		return damageDealt;
+		c.hp -= damageDealt;
+		system("cls");
+		std::cout << "He did " << damageDealt << " to you\n";
 	}
 	else {
-		normalAttack(enemyArmour);
+		normalAttack(c);
 	}
 }
